@@ -1,0 +1,55 @@
+export const GetAllProducts = (payload) => {
+  const endpoint = `https://dummyjson.com/products?limit=${payload.limit}&skip=${payload.skip}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint)
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
+
+export const GetAllCategories = (payload) => {
+  const endpoint = `https://dummyjson.com/products/categories`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint)
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
+
+export const GetProductsByCategory = (payload) => {
+  const endpoint = `https://dummyjson.com/products/category/${payload.category}?limit=${payload.limit}&skip=${payload.skip}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint)
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
+
+export const GetProductsBySearchQuery = (payload) => {
+    const endpoint = `https://dummyjson.com/products/search/?limit=${payload.limit}&skip=${payload.skip}&q=${payload.search}`;
+    return new Promise((resolve, reject) => {
+      fetch(endpoint)
+        .then((data) => data.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((e) => {
+          reject(e.error.message || "Something went wrong please try again!!");
+        });
+    });
+  };
