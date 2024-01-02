@@ -4,11 +4,16 @@ import {
   GetAllProducts,
   GetProductsByCategory,
   GetProductsBySearchQuery,
+  GetAllCategories,
+  AddNewProduct
 } from "../../Services/Service";
 import Categories from "../Categories/Categories";
 import Header from "../Header/Header";
 import Search from "../Search/Search";
+import Button from "@mui/material/Button";
 import "./Products.scss";
+import PlusIcon from "@mui/icons-material/Add";
+import AddProduct from "./AddProduct/AddProduct";
 
 const Products = () => {
   const [products, setProducts] = useState([]); //Set Product lists
@@ -16,6 +21,8 @@ const Products = () => {
   const [searchText, setSearchText] = useState(null); // Search product
   const [selectedCat, setSelectedCat] = useState(""); // Selected product category
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isOpen, setIsOpen] = useState(false); // Loading state
+  const [categories, setCategories] = useState([]);
   const skip = useRef(0); // Page count
   const limit = 10; // Results limit
   const productColumns = {
@@ -28,6 +35,13 @@ const Products = () => {
 
   useEffect(() => {
     fetchData(GetAllProducts, getPayload());
+    GetAllCategories()
+      .then((resp) => {
+        setCategories(resp);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }, []); // Run only once on mount
 
   useEffect(() => {
@@ -94,13 +108,34 @@ const Products = () => {
     skip: skip.current * limit,
   });
 
+  const handleSubmitProduct = (productInfo) => {
+    AddNewProduct(productInfo).then((data) => {
+      setIsOpen(false);
+      console.log("Product Added Successfully....", data);
+    }).catch(e => {
+      console.log("Error: ", e);
+    })
+  };
+
   return (
     <>
       <Header />
       <div className="product-body">
         <div className="filters">
           <Search handleSearch={debouncedHandleSearch} />
-          <Categories handleChangeCategory={handleChangeCategory} />
+          <div className="actions">
+            <Button
+              onClick={(e) => setIsOpen(true)}
+              variant="outlined"
+              startIcon={<PlusIcon />}
+            >
+              Add Product
+            </Button>
+            <Categories
+              categories={categories}
+              handleChangeCategory={handleChangeCategory}
+            />
+          </div>
         </div>
         <div className="product-data">
           <Table
@@ -122,6 +157,14 @@ const Products = () => {
             ))}
         </div>
       </div>
+      {isOpen && (
+      <AddProduct
+        categories={categories}
+        isOpen={isOpen}
+        handleClose={(e) => setIsOpen(false)}
+        handleSubmitProduct={handleSubmitProduct}
+      />
+      )}
     </>
   );
 };

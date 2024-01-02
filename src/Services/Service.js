@@ -41,15 +41,33 @@ export const GetProductsByCategory = (payload) => {
 };
 
 export const GetProductsBySearchQuery = (payload) => {
-    const endpoint = `https://dummyjson.com/products/search/?limit=${payload.limit}&skip=${payload.skip}&q=${payload.search}`;
-    return new Promise((resolve, reject) => {
-      fetch(endpoint)
-        .then((data) => data.json())
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((e) => {
-          reject(e.error.message || "Something went wrong please try again!!");
-        });
-    });
-  };
+  const endpoint = `https://dummyjson.com/products/search/?limit=${payload.limit}&skip=${payload.skip}&q=${payload.search}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint)
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
+
+export const AddNewProduct = (payload) => {
+  const endpoint = `https://dummyjson.com/products/add`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint,{
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
