@@ -17,3 +17,5 @@
 3. GET all categories: https://dummyjson.com/products/categories
 4. GET Product by category: https://dummyjson.com/products/category/smartphones
 5. ADD Product: https://dummyjson.com/products/add
+6. Update Product: https://dummyjson.com/products/1
+7. Delete Product: https://dummyjson.com/products/1
