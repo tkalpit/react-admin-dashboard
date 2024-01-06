@@ -5,6 +5,8 @@
 3. Support product by category filter.
 4. Support pagination in product table.
 5. Support add product.
+6. Support update product.
+7. Support delete product.
 
 
 # API's:

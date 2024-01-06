@@ -5,7 +5,9 @@ import {
   GetProductsByCategory,
   GetProductsBySearchQuery,
   GetAllCategories,
-  AddNewProduct
+  AddNewProduct,
+  UpdateProduct,
+  DeleteProduct,
 } from "../../Services/Service";
 import Categories from "../Categories/Categories";
 import Header from "../Header/Header";
@@ -13,7 +15,10 @@ import Search from "../Search/Search";
 import Button from "@mui/material/Button";
 import "./Products.scss";
 import PlusIcon from "@mui/icons-material/Add";
-import AddProduct from "./AddProduct/AddProduct";
+import ProductModal from "./ProductModal/ProductModal";
+import ConfirmModal from "./ConfirmModal/ConfirmModal";
+import { toast } from "react-toastify";
+import { ACTIONS, PRODUCT_ADDED_MSG, PRODUCT_DELETED_MSG, PRODUCT_UPDATED_MSG, ERROR_MSG } from "../../utils/utils.ts";
 
 const Products = () => {
   const [products, setProducts] = useState([]); //Set Product lists
@@ -21,10 +26,13 @@ const Products = () => {
   const [searchText, setSearchText] = useState(null); // Search product
   const [selectedCat, setSelectedCat] = useState(""); // Selected product category
   const [isLoading, setIsLoading] = useState(true); // Loading state
-  const [isOpen, setIsOpen] = useState(false); // Loading state
+  const [isOpen, setIsOpen] = useState(false); // Open close product modal : ADD, UPDATE CASE
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); // Open close confirm modal : DELETE CASE
   const [categories, setCategories] = useState([]);
   const skip = useRef(0); // Page count
   const limit = 10; // Results limit
+  const selectedRowData = useRef(); // EDIT and DELETED selected product data
+  const action = useRef(ACTIONS.ADD); // ACTIONS: UPDATE, ADD, DELETE
   const productColumns = {
     sno: "Sno.",
     title: "Title",
@@ -40,9 +48,9 @@ const Products = () => {
         setCategories(resp);
       })
       .catch((e) => {
-        console.log(e);
+        toast.error(e?.error || ERROR_MSG);
       });
-  }, []); // Run only once on mount
+  }, []);
 
   useEffect(() => {
     if (selectedCat) {
@@ -72,7 +80,7 @@ const Products = () => {
       setTotalProducts(resp.total);
       setIsLoading(false);
     } catch (e) {
-      console.error(e);
+      toast.error(e?.error || ERROR_MSG);
     }
   };
 
@@ -91,12 +99,11 @@ const Products = () => {
       }, delay);
     };
   };
-
-  // Debounced handleSearch
+  
   const debouncedHandleSearch = debounce((text) => {
     skip.current = 0;
     setSearchText(text);
-  }, 500); // Adjust the delay as needed
+  }, 500);
 
   const handleChangeCategory = (cat) => {
     skip.current = 0;
@@ -108,13 +115,55 @@ const Products = () => {
     skip: skip.current * limit,
   });
 
-  const handleSubmitProduct = (productInfo) => {
-    AddNewProduct(productInfo).then((data) => {
-      setIsOpen(false);
-      console.log("Product Added Successfully....", data);
-    }).catch(e => {
-      console.log("Error: ", e);
-    })
+  const handleSubmitProduct = (productInfo, action, productID) => {
+    switch (action) {
+      case ACTIONS.UPDATE:
+        UpdateProduct(productInfo, productID)
+          .then((data) => {
+            selectedRowData.current = null;
+            setIsOpen(false);
+            toast.success(PRODUCT_UPDATED_MSG);
+            fetchData(GetAllProducts, getPayload());
+          })
+          .catch((e) => {
+            toast.error(e?.error || ERROR_MSG);
+          });
+        break;
+      case ACTIONS.DELETE:
+        DeleteProduct(productInfo)
+          .then((data) => {
+            selectedRowData.current = null;
+            setIsConfirmOpen(false);
+            toast.success(PRODUCT_DELETED_MSG);
+            fetchData(GetAllProducts, getPayload());
+          })
+          .catch((e) => {
+            toast.error(e?.error || ERROR_MSG);
+          });
+        break;
+      default:
+        AddNewProduct(productInfo)
+          .then((data) => {
+            setIsOpen(false);
+            toast.success(PRODUCT_ADDED_MSG);
+            fetchData(GetAllProducts, getPayload());
+          })
+          .catch((e) => {
+            toast.error(e?.error || ERROR_MSG);
+          });
+        break;
+    }
+  };
+
+  const handleEditProduct = (data) => {
+    action.current = ACTIONS.UPDATE;
+    selectedRowData.current = data;
+    setIsOpen(true);
+  };
+
+  const handleDeleteProduct = (data) => {
+    selectedRowData.current = data;
+    setIsConfirmOpen(true);
   };
 
   return (
@@ -141,6 +190,8 @@ const Products = () => {
           <Table
             columns={productColumns}
             data={products}
+            handleEditProduct={handleEditProduct}
+            handleDeleteProduct={handleDeleteProduct}
             isDataLoading={isLoading}
           />
         </div>
@@ -158,12 +209,23 @@ const Products = () => {
         </div>
       </div>
       {isOpen && (
-      <AddProduct
-        categories={categories}
-        isOpen={isOpen}
-        handleClose={(e) => setIsOpen(false)}
-        handleSubmitProduct={handleSubmitProduct}
-      />
+        <ProductModal
+          categories={categories}
+          data={selectedRowData.current}
+          action={action.current}
+          isOpen={isOpen}
+          handleClose={(e) => setIsOpen(false)}
+          handleSubmitProduct={handleSubmitProduct}
+        />
+      )}
+
+      {isConfirmOpen && (
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          productID={selectedRowData.current.id}
+          handleClose={(e) => setIsConfirmOpen(false)}
+          handleSubmitProduct={handleSubmitProduct}
+        />
       )}
     </>
   );

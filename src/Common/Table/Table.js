@@ -1,4 +1,11 @@
-const Table = ({ columns, data, isDataLoading }) => {
+import "./Table.scss";
+const Table = ({
+  columns,
+  data,
+  isDataLoading,
+  handleEditProduct,
+  handleDeleteProduct,
+}) => {
   return (
     <table>
       <thead>
@@ -6,6 +13,7 @@ const Table = ({ columns, data, isDataLoading }) => {
           {Object.keys(columns).map((col, key) => {
             return <th key={key}>{col}</th>;
           })}
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -19,20 +27,34 @@ const Table = ({ columns, data, isDataLoading }) => {
                   {product.title}
                 </div>
               </td>
-              <td>{product.price}</td>
+              <td>${product.price}</td>
               <td>{product.category}</td>
               <td>{product.brand}</td>
+              <td className="product-actions">
+                <span
+                  className="edit-product"
+                  onClick={(e) => handleEditProduct(product)}
+                >
+                  Edit
+                </span>
+                <span
+                  className="edit-product"
+                  onClick={(e) => handleDeleteProduct(product)}
+                >
+                  Delete
+                </span>
+              </td>
             </tr>
           ))
         ) : !isDataLoading ? (
           <tr>
-            <td className="no-product" colSpan="5">
+            <td className="no-product" colSpan="6">
               Data Not Available
             </td>
           </tr>
         ) : (
           <tr>
-            <td className="no-product" colSpan="5">
+            <td className="no-product" colSpan="6">
               Loading...
             </td>
           </tr>

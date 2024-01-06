@@ -71,3 +71,38 @@ export const AddNewProduct = (payload) => {
       });
   });
 };
+
+export const UpdateProduct = (payload, productID) => {
+  const endpoint = `https://dummyjson.com/products/${productID}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint,{
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};
+
+export const DeleteProduct = (productID) => {
+  const endpoint = `https://dummyjson.com/products/${productID}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint,{
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};

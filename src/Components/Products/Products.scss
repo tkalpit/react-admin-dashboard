@@ -10,34 +10,6 @@
             gap: 12px;
         }
     }
-    .product-data {
-        table {
-            width: 100%;
-            td, th {
-                border: 1px solid #ddd;
-                padding: 8px;
-                &.no-product {
-                    text-align: center;
-                }
-                
-            }
-            .title-img {
-                display: flex;
-                align-items: center;
-                gap:10px;
-                img {
-                    width: 24px;
-                }
-            }
-            th {
-                padding-top: 12px;
-                padding-bottom: 12px;
-                text-align: left;
-                background-color: #eee;
-                color: #000;
-            }
-        }
-    }
     .product-footer {
         display: flex;
         justify-content: flex-end;

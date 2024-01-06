@@ -8,24 +8,27 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
-import "./AddProduct.scss";
-const AddProduct = ({
+import "./ProductModal.scss";
+const ProductModal = ({
   isOpen,
   handleClose,
   handleSubmitProduct,
   categories,
+  data,
+  action = "ADD",
 }) => {
-  const [selectedCat, setSelectedCat] = useState("");
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [rating, setRating] = useState(0);
-  const [brandName, setBrandName] = useState("");
+  const [selectedCat, setSelectedCat] = useState(data?.category || "");
+  const [title, setTitle] = useState(data?.title || "");
+  const [price, setPrice] = useState(data?.price || "");
+  const [description, setDescription] = useState(data?.description || "");
+  const [rating, setRating] = useState(data?.rating || "");
+  const [brandName, setBrandName] = useState(data?.brand || "");
+  const modalHeading = action === "UPDATE" ? "Update Product" : "Add Product";
 
   const handleChange = (event) => {
     setSelectedCat(event.target.value);
   };
-  const handleAddProduct = () => {
+  const handleProductAction = () => {
     const productInfo = {
       title: title,
       price: price,
@@ -34,12 +37,12 @@ const AddProduct = ({
       brand: brandName,
       rating: rating,
     };
-    handleSubmitProduct(productInfo);
+    handleSubmitProduct(productInfo, action, data?.id);
   };
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>Add Product</DialogTitle>
+      <DialogTitle>{modalHeading}</DialogTitle>
       <DialogContent className="modal-body-content">
         <TextField
           className="mg-b-24"
@@ -47,6 +50,7 @@ const AddProduct = ({
           fullWidth
           id="outlined-required"
           label="Title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
@@ -54,6 +58,7 @@ const AddProduct = ({
           fullWidth
           id="outlined-required"
           label="Price"
+          value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -81,6 +86,7 @@ const AddProduct = ({
           fullWidth
           id="outlined-required"
           label="Rating"
+          value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
         <TextField
@@ -88,20 +94,26 @@ const AddProduct = ({
           fullWidth
           id="outlined-required"
           label="Description"
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <TextField
           fullWidth
           id="outlined-required"
           label="Brand"
+          value={brandName}
           onChange={(e) => setBrandName(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-        <Button variant="outlined" onClick={handleAddProduct}>Submit</Button>
+        <Button variant="outlined" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="outlined" onClick={handleProductAction}>
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );
 };
-export default AddProduct;
+export default ProductModal;
