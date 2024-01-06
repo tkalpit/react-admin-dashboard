@@ -2,8 +2,14 @@
   position: relative;
   padding-top: 64px;
   main {
-    img {
+    .banner {
       width: 100%;
+    }
+    .products {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 12px 64px;
     }
   }
 }

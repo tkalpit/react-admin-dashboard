@@ -3,7 +3,7 @@ export enum ACTIONS {
     UPDATE = 'UPDATE',
     DELETE = 'DELETE',
 }
-
+export const DESCRIPTION_LIMIT = 50;
 export const ERROR_MSG = "Something went wrong. Please try again!";
 export const PRODUCT_ADDED_MSG = "Product Added Successfully...";
 export const PRODUCT_UPDATED_MSG = "Product Updated Successfully....";
