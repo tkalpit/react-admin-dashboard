@@ -1,14 +1,12 @@
-import "./Reset.scss";
-import Products from "./Components/Products/Products";
+import Products from "./Products/Products";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-function App() {
+const Admin = () => {
   return (
-    <div className="App">
+    <div className="admin">
       <Products />
       <ToastContainer />
     </div>
   );
-}
-
-export default App;
+};
+export default Admin;

@@ -7,6 +7,7 @@
 5. Support add product.
 6. Support update product.
 7. Support delete product.
+8. Home page (Header, banner)
 
 
 # API's:

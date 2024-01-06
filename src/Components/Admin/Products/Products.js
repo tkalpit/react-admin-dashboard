@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Table from "../../Common/Table/Table";
+import Table from "../../../Common/Table/Table";
 import {
   GetAllProducts,
   GetProductsByCategory,
@@ -8,7 +8,7 @@ import {
   AddNewProduct,
   UpdateProduct,
   DeleteProduct,
-} from "../../Services/Service";
+} from "../../../Services/Service";
 import Categories from "../Categories/Categories";
 import Header from "../Header/Header";
 import Search from "../Search/Search";
@@ -18,7 +18,13 @@ import PlusIcon from "@mui/icons-material/Add";
 import ProductModal from "./ProductModal/ProductModal";
 import ConfirmModal from "./ConfirmModal/ConfirmModal";
 import { toast } from "react-toastify";
-import { ACTIONS, PRODUCT_ADDED_MSG, PRODUCT_DELETED_MSG, PRODUCT_UPDATED_MSG, ERROR_MSG } from "../../utils/utils.ts";
+import {
+  ACTIONS,
+  PRODUCT_ADDED_MSG,
+  PRODUCT_DELETED_MSG,
+  PRODUCT_UPDATED_MSG,
+  ERROR_MSG,
+} from "../../../utils/utils.ts";
 
 const Products = () => {
   const [products, setProducts] = useState([]); //Set Product lists
@@ -99,7 +105,7 @@ const Products = () => {
       }, delay);
     };
   };
-  
+
   const debouncedHandleSearch = debounce((text) => {
     skip.current = 0;
     setSearchText(text);
@@ -120,7 +126,7 @@ const Products = () => {
       case ACTIONS.UPDATE:
         UpdateProduct(productInfo, productID)
           .then((data) => {
-            selectedRowData.current = null;
+            reset();
             setIsOpen(false);
             toast.success(PRODUCT_UPDATED_MSG);
             fetchData(GetAllProducts, getPayload());
@@ -132,7 +138,7 @@ const Products = () => {
       case ACTIONS.DELETE:
         DeleteProduct(productInfo)
           .then((data) => {
-            selectedRowData.current = null;
+            reset();
             setIsConfirmOpen(false);
             toast.success(PRODUCT_DELETED_MSG);
             fetchData(GetAllProducts, getPayload());
@@ -164,6 +170,11 @@ const Products = () => {
   const handleDeleteProduct = (data) => {
     selectedRowData.current = data;
     setIsConfirmOpen(true);
+  };
+
+  const reset = () => {
+    action.current = ACTIONS.ADD;
+    selectedRowData.current = null;
   };
 
   return (
@@ -214,7 +225,10 @@ const Products = () => {
           data={selectedRowData.current}
           action={action.current}
           isOpen={isOpen}
-          handleClose={(e) => setIsOpen(false)}
+          handleClose={(e) => {
+            reset();
+            setIsOpen(false);
+          }}
           handleSubmitProduct={handleSubmitProduct}
         />
       )}
@@ -223,7 +237,10 @@ const Products = () => {
         <ConfirmModal
           isOpen={isConfirmOpen}
           productID={selectedRowData.current.id}
-          handleClose={(e) => setIsConfirmOpen(false)}
+          handleClose={(e) => {
+            reset();
+            setIsConfirmOpen(false);
+          }}
           handleSubmitProduct={handleSubmitProduct}
         />
       )}
