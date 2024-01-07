@@ -8,6 +8,7 @@
 6. Support update product.
 7. Support delete product.
 8. Home page (Header, banner)
+9. Product Page 
 
 
 # API's:
@@ -19,3 +20,4 @@
 5. ADD Product: https://dummyjson.com/products/add
 6. Update Product: https://dummyjson.com/products/1
 7. Delete Product: https://dummyjson.com/products/1
+8. Get Single Product: https://dummyjson.com/products/1
