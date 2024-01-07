@@ -106,3 +106,17 @@ export const DeleteProduct = (productID) => {
       });
   });
 };
+
+export const GetProductByID = (productID) => {
+  const endpoint = `https://dummyjson.com/products/${productID}`;
+  return new Promise((resolve, reject) => {
+    fetch(endpoint)
+      .then((data) => data.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e.error.message || "Something went wrong please try again!!");
+      });
+  });
+};

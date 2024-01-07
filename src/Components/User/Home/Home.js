@@ -31,6 +31,7 @@ const Home = () => {
           products.map((product) => (
             <ProductCard
               title={product.title}
+              productID={product.id}
               description={product.description}
               price={product.price}
               productThumbnail={product.thumbnail}

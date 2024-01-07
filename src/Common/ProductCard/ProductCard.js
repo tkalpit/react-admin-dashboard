@@ -1,6 +1,7 @@
 import { DESCRIPTION_LIMIT } from "../../utils/utils.ts";
+import { Link } from "react-router-dom";
 import "./ProductCard.scss";
-const ProductCard = ({productThumbnail, title, description, price}) => {
+const ProductCard = ({productID, productThumbnail, title, description, price}) => {
     let productDesc = description;
     if(description.length > DESCRIPTION_LIMIT) {
         productDesc = `${description.substring(0,DESCRIPTION_LIMIT)}...`;
@@ -8,12 +9,14 @@ const ProductCard = ({productThumbnail, title, description, price}) => {
 
     return (
         <div className="product-card">
-            <img src={productThumbnail} alt="product"/>
-            <div className="product-info">
-                <p className="title">{title}</p>
-                <p className="description">{productDesc}</p>
-                <p className="price">${price}</p>
-            </div>
+            <Link className="product-link" to={`products/${productID}`}>
+                <img src={productThumbnail} alt="product"/>
+                <div className="product-info">
+                    <p className="title">{title}</p>
+                    <p className="description">{productDesc}</p>
+                    <p className="price">${price}</p>
+                </div>
+            </Link>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import logo from '../../../utils/logo.png';
 const Header = () => {
     return (
         <header>
-            <img src={logo} alt="logo"/>
+            <Link to="/"><img src={logo} alt="logo"/></Link>
             <nav>
                 <Link className="link" to="/">Home</Link>
                 <Link className="link" to="/category">Category</Link>
