@@ -7,8 +7,10 @@
 5. Support add product.
 6. Support update product.
 7. Support delete product.
-8. Home page (Header, banner)
-9. Product Page 
+8. Home page (Header, banner).
+9. Product Page.
+10. Create Login page.
+11. Support protected routes.
 
 
 # API's:

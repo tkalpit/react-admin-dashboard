@@ -15,8 +15,6 @@ const Login = () => {
     }
   }, [isAuthenticated]);
   const handleLogin = () => {
-    console.log("username", username);
-    console.log("password", password);
     localStorage.setItem("token",btoa(`${username}${password}`));
     setTimeout(() => {
         setIsAuthenticated(true);
