@@ -1,14 +1,15 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import Admin from "./Components/Admin/Admin";
-import Home from "./Components/User/Home/Home";
 import "./Reset.scss";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SingleProductInfo from "./Components/User/Product/Product";
-import Shop from "./Components/User/Shop/Shop";
 import Login from "./Components/Authentication/Login/Login";
 import ProtectedRoute from "./Components/Authentication/ProtectedRoute";
 import Logout from "./Components/Authentication/Logout";
+
+const SingleProductInfo = lazy(() => import("./Components/User/Product/Product"));
+const Admin = lazy(() => import("./Components/Admin/Admin"));
+const Home = lazy(() => import("./Components/User/Home/Home"));
+const Shop = lazy(() => import("./Components/User/Shop/Shop"));
 
 const router = createBrowserRouter([
   {
@@ -24,19 +25,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/admin",
-        element: <Admin />,
+        element: <Suspense><Admin /></Suspense>,
       },
       {
         path: "/",
-        element: <Home />,
+        element: <Suspense><Home /></Suspense>,
       },
       {
         path: "/category",
-        element: <Shop />,
+        element: <Suspense><Shop /></Suspense>,
       },
       {
         path: "/products/:productID",
-        element: <SingleProductInfo />,
+        element: <Suspense><SingleProductInfo /></Suspense>,
       },
     ],
   },
