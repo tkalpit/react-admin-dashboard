@@ -1,0 +1,37 @@
+.login-section {
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 15px 40px -20px rgba(40, 44, 63, 0.15);
+  background: #efefef;
+  padding: 24px 48px;
+  border-radius: 12px;
+
+  div {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    label {
+      display: inline-block;
+      width: 100px;
+    }
+    input {
+      padding: 6px 12px;
+      border: 1px solid #7f7f7f;
+      border-radius: 4px;
+      width: 50%;
+    }
+    button {
+      width: 100%;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      padding: 8px;
+      background: #005ea6;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}
