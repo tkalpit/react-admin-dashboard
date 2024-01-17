@@ -11,6 +11,7 @@
 9. Product Page.
 10. Create Login page.
 11. Support protected routes.
+12. Category/Shop Page (Infinte scroll, category filter).
 
 
 # API's:
