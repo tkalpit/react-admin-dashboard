@@ -9,7 +9,7 @@ const ProductCard = ({productID, productThumbnail, title, description, price}) =
 
     return (
         <div className="product-card">
-            <Link className="product-link" to={`products/${productID}`}>
+            <Link className="product-link" to={`/products/${productID}`}>
                 <img src={productThumbnail} alt="product"/>
                 <div className="product-info">
                     <p className="title">{title}</p>

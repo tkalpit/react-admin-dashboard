@@ -1,0 +1,21 @@
+.category-wrapper {
+  padding-top: 64px;
+  main {
+    .banner {
+      width: 100%;
+    }
+    .shop {
+      padding: 12px 64px;
+      .category-section {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .products {
+        padding-top: 24px;
+        display: grid;
+        gap: 32px;
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+}
